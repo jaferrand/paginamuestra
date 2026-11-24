@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Calle Urbana. Portafolio de fotografía callejera, escenas cotidianas y registros de la vida urbana.">
+
+    <meta name="theme-color" content="#121212">
+
+    <title>Calle Urbana | Street Photography</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* =========================================
+           CONFIGURACIÓN GENERAL
+        ========================================= */
+
+        :root {
+            --background: #121212;
+            --surface: #222222;
+            --accent: #ff4500;
+            --white: #f1f1ed;
+            --muted: #999999;
+            --border: #333333;
+            --heading: 'Oswald', 'Arial Narrow', sans-serif;
+            --body: 'Space Mono', 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--white);
+            font-family: var(--body);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 5px;
+        }
+
+        .container {
+            width: min(92%, 1600px);
+            margin-inline: auto;
+        }
+
+        .accent {
+            color: var(--accent);
+        }
+
+        /* =========================================
+           NAVEGACIÓN
+        ========================================= */
+
+        .navigation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            width: 100%;
+            padding: 25px 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255,255,255,.15);
+        }
+
+        .logo {
+            font-family: var(--heading);
+            font-size: 25px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .navigation-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .navigation-links a {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color .3s ease;
+        }
+
+        .navigation-links a:hover {
+            color: var(--accent);
+        }
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            isolation: isolate;
+            overflow: hidden;
+            background: #1c1c1c;
+        }
+
+        /*
+           Se utiliza hero-bg.jpg como imagen principal.
+           Si no existe, se intenta utilizar una de las
+           fotografías originales adjuntas.
+        */
+
+        .hero-background {
+            position: absolute;
+            inset: 0;
+            z-index: -3;
+            background-image:
+                url('hero-bg.jpg'),
+                url('DSC00763.JPG');
+            background-position: center, center;
+            background-size: cover, cover;
+            background-repeat: no-repeat;
+            filter: grayscale(100%) contrast(1.15);
+            animation: heroEntrance 1.4s ease both;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            background: linear-gradient(
+                90deg,
+                rgba(0,0,0,.85) 0%,
+                rgba(0,0,0,.48) 55%,
+                rgba(0,0,0,.15) 100%
+            );
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(
+                0deg,
+                var(--background) 0%,
+                transparent 40%
+            );
+        }
+
+        .hero-content {
+            width: min(92%, 1600px);
+            margin-inline: auto;
+            padding-top: 100px;
+            padding-bottom: 130px;
+            animation: fadeIn 1.2s ease both;
+        }
+
+        .hero-label {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+        }
+
+        .hero-label::before {
+            content: "";
+            width: 45px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .hero h1 {
+            font-family: var(--heading);
+            font-size: clamp(85px, 16vw, 250px);
+            font-weight: 700;
+            line-height: .95;
+            letter-spacing: -.045em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 span {
+            display: block;
+            color: var(--accent);
+        }
+
+        .hero-description {
+            max-width: 530px;
+            margin-top: 35px;
+            color: #cccccc;
+            font-size: clamp(12px, 1.3vw, 15px);
+        }
+
+        .hero-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 30px;
+            margin-top: 35px;
+            padding: 17px 25px;
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: background .3s, color .3s;
+        }
+
+        .hero-button:hover {
+            background: var(--white);
+            color: var(--background);
+        }
+
+        .hero-bottom {
+            position: absolute;
+            bottom: 30px;
+            left: 4%;
+            right: 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            color: #aaaaaa;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .scroll-indicator::before {
+            content: "";
+            width: 1px;
+            height: 35px;
+            background: var(--accent);
+        }
+
+        /* =========================================
+           FRANJA EDITORIAL
+        ========================================= */
+
+        .editorial-strip {
+            background: var(--accent);
+            color: #121212;
+            padding: 14px 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px 30px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* =========================================
+           INTRODUCCIÓN
+        ========================================= */
+
+        .intro {
+            padding: 110px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .intro-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 70px;
+            align-items: end;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--accent);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 22px;
+        }
+
+        .section-label::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            background: var(--accent);
+        }
+
+        .intro h2 {
+            font-family: var(--heading);
+            font-size: clamp(44px, 6vw, 100px);
+            line-height: 1.05;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .intro-text {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .intro-text p + p {
+            margin-top: 20px;
+        }
+
+        /* =========================================
+           GALERÍA
+        ========================================= */
+
+        .gallery-section {
+            padding: 100px 0 120px;
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .gallery-header h2 {
+            font-family: var(--heading);
+            font-size: clamp(48px, 7vw, 110px);
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .gallery-counter {
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        /*
+           SISTEMA A PRUEBA DE FALLOS
+
+           Cada fotografía tiene un contenedor de altura
+           fija independiente de la carga de su imagen.
+
+           Si no existe la fotografía, permanece visible
+           el fondo gris y su indicador correspondiente.
+        */
+
+        .gallery-item {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 350px;
+            min-width: 0;
+            overflow: hidden;
+            border: 2px solid transparent;
+            border-radius: 0;
+            background: #222222;
+            color: var(--white);
+            text-align: left;
+            isolation: isolate;
+            transition: border-color .35s ease;
+        }
+
+        .gallery-item:hover,
+        .gallery-item:focus-visible {
+            border-color: var(--accent);
+        }
+
+        .gallery-item img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            filter: grayscale(80%) contrast(1.2);
+            opacity: 0;
+            transition:
+                filter .6s ease,
+                transform .6s ease,
+                opacity .4s ease;
+        }
+
+        .gallery-item.is-loaded img {
+            opacity: 1;
+        }
+
+        .gallery-item:hover img,
+        .gallery-item:focus-visible img {
+            filter: grayscale(0%) contrast(1);
+            transform: scale(1.05);
+        }
+
+        .gallery-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(
+                0deg,
+                rgba(0,0,0,.85),
+                transparent 45%
+            );
+        }
+
+        /* Fotografía no disponible */
+
+        .image-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 30px;
+            text-align: center;
+            background: #222222;
+            color: #777777;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .image-placeholder svg {
+            width: 38px;
+            height: 38px;
+            stroke: #555555;
+        }
+
+        .image-placeholder::after {
+            content: "Archivo fotográfico";
+            color: #888888;
+            font-size: 10px;
+        }
+
+        .gallery-item.is-loaded .image-placeholder {
+            visibility: hidden;
+        }
+
+        .gallery-item.is-error img {
+            visibility: hidden;
+        }
+
+        .gallery-item.is-error .image-placeholder::after {
+            content: "Imagen no disponible";
+        }
+
+        .gallery-item.is-error {
+            cursor: default;
+        }
+
+        .image-number {
+            position: absolute;
+            z-index: 3;
+            top: 15px;
+            left: 15px;
+            padding: 5px 10px;
+            background: rgba(18,18,18,.85);
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        .image-info {
+            position: absolute;
+            z-index: 3;
+            bottom: 18px;
+            left: 18px;
+            right: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .image-title {
+            display: block;
+            font-family: var(--heading);
+            font-size: 26px;
+            font-weight: 500;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .image-category {
+            display: block;
+            margin-top: 5px;
+            font-size: 9px;
+            color: #bbbbbb;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .expand-icon {
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            width: 35px;
+            height: 35px;
+            border: 1px solid rgba(255,255,255,.4);
+            font-size: 20px;
+            transition:
+                background .3s ease,
+                border-color .3s ease;
+        }
+
+        .gallery-item:hover .expand-icon {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .gallery-item.is-error .expand-icon {
+            display: none;
+        }
+
+        .gallery-end {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: var(--muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 35px;
+        }
+
+        .gallery-end::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* =========================================
+           CIERRE EDITORIAL
+        ========================================= */
+
+        .statement {
+            padding: 90px 0;
+            background: #191919;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .statement-content {
+            max-width: 1100px;
+        }
+
+        .statement h2 {
+            font-family: var(--heading);
+            font-size: clamp(40px, 6vw, 90px);
+            line-height: 1.15;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .statement p {
+            margin-top: 25px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* =========================================
+           LIGHTBOX
+        ========================================= */
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 70px 65px;
+            background: rgba(8,8,8,.97);
+            opacity: 0;
+            visibility: hidden;
+            transition:
+                opacity .3s ease,
+                visibility .3s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-image {
+            display: block;
+            max-width: 100%;
+            max-height: 75vh;
+            max-height: 75svh;
+            object-fit: contain;
+        }
+
+        .lightbox-caption {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #cccccc;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .lightbox-control {
+            position: absolute;
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            background: #222222;
+            color: #ffffff;
+            border: 1px solid #444444;
+            font-size: 25px;
+            transition: background .3s;
+        }
+
+        .lightbox-control:hover {
+            background: var(--accent);
+        }
+
+        .lightbox-close {
+            top: 20px;
+            right: 20px;
+        }
+
+        .lightbox-prev {
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-next {
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+        }
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+            padding: 55px 0 30px;
+        }
+
+        .footer-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            padding-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-family: var(--heading);
+            font-size: clamp(35px, 5vw, 65px);
+            text-transform: uppercase;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .back-to-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-to-top:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-top: 1px solid var(--border);
+            padding-top: 25px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        /* =========================================
+           ANIMACIONES
+        ========================================= */
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes heroEntrance {
+            from {
+                opacity: 0;
+                transform: scale(1.04);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .intro,
+        .gallery-section {
+            animation: fadeIn 1s ease both;
+        }
+
+        /* =========================================
+           RESPONSIVE — TABLETS
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .intro-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .intro {
+                padding: 70px 0;
+            }
+
+            .gallery-section {
+                padding: 70px 0;
+            }
+
+            .gallery-item {
+                height: 320px;
+            }
+
+            .hero h1 {
+                font-size: clamp(80px, 18vw, 160px);
+            }
+
+        }
+
+        /* =========================================
+           RESPONSIVE — TELÉFONOS
+        ========================================= */
+
+        @media (max-width: 600px) {
+
+            .navigation {
+                padding: 20px 4%;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .navigation-links {
+                gap: 15px;
+            }
+
+            .navigation-links a {
+                font-size: 9px;
+                letter-spacing: 0;
+            }
+
+            .hero-background {
+                background-position: 58% center;
+            }
+
+            .hero-content {
+                padding-top: 110px;
+                padding-bottom: 120px;
+            }
+
+            .hero h1 {
+                font-size: clamp(65px, 19vw, 115px);
+            }
+
+            .hero-label {
+                font-size: 9px;
+                letter-spacing: 2px;
+            }
+
+            .hero-label::before {
+                width: 25px;
+            }
+
+            .hero-description {
+                font-size: 12px;
+                max-width: 95%;
+            }
+
+            .hero-bottom {
+                font-size: 8px;
+                letter-spacing: 1px;
+            }
+
+            .editorial-strip {
+                font-size: 9px;
+                letter-spacing: 1px;
+            }
+
+            .editorial-strip span:last-child {
+                display: none;
+            }
+
+            .gallery-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            /*
+               min(300px, 100%) evita desbordamientos
+               en pantallas de menos de 320px.
+            */
+
+            .gallery-grid {
+                grid-template-columns:
+                    repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+                gap: 15px;
+            }
+
+            .gallery-item {
+                height: 300px;
+            }
+
+            .image-title {
+                font-size: 23px;
+            }
+
+            .intro-text {
+                font-size: 12px;
+            }
+
+            .statement {
+                padding: 60px 0;
+            }
+
+            .footer-main {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+            }
+
+            .lightbox {
+                padding: 65px 12px 100px;
+            }
+
+            .lightbox-prev,
+            .lightbox-next {
+                top: auto;
+                bottom: 25px;
+                transform: none;
+            }
+
+            .lightbox-prev {
+                left: calc(50% - 55px);
+            }
+
+            .lightbox-next {
+                right: calc(50% - 55px);
+            }
+
+        }
+
+        /* Dispositivos táctiles */
+
+        @media (hover: none) {
+
+            .gallery-item img {
+                filter: grayscale(35%) contrast(1.1);
+            }
+
+        }
+
+        /* Accesibilidad */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ========================================
+         NAVEGACIÓN
+    ========================================= -->
+
+    <nav class="navigation" aria-label="Navegación principal">
+
+        <a href="#inicio" class="logo">
+            Calle<span class="accent">.</span>Urbana
+        </a>
+
+        <div class="navigation-links">
+            <a href="#inicio">Inicio</a>
+            <a href="#proyecto">Proyecto</a>
+            <a href="#galeria">Galería</a>
+        </div>
+
+    </nav>
+
+    <main>
+
+        <!-- ====================================
+             HERO
+        ===================================== -->
+
+        <header class="hero" id="inicio">
+
+            <div class="hero-background" aria-hidden="true"></div>
+
+            <div class="hero-content">
+
+                <div class="hero-label">
+                    Fotografía documental / Street Photography
+                </div>
+
+                <h1>
+                    Calle
+                    <span>Urbana.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Fragmentos de una ciudad que no se detiene.
+                    Rostros, encuentros y escenas cotidianas
+                    que existen más allá de nuestra mirada.
+                </p>
+
+                <a href="#galeria" class="hero-button">
+                    Explorar galería
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+            </div>
+
+            <div class="hero-bottom">
+
+                <span class="scroll-indicator">
+                    Desplazar para explorar
+                </span>
+
+                <span>Chile / Archivo urbano</span>
+
+            </div>
+
+        </header>
+
+        <div class="editorial-strip">
+            <span>01 — Registro documental</span>
+            <span>La ciudad sin pose</span>
+            <span>Street Photography / Chile</span>
+        </div>
+
+        <!-- ====================================
+             INTRODUCCIÓN
+        ===================================== -->
+
+        <section class="intro" id="proyecto">
+
+            <div class="container intro-layout">
+
+                <div>
+
+                    <div class="section-label">
+                        Sobre el proyecto
+                    </div>
+
+                    <h2>
+                        Lo extraordinario
+                        de lo <span class="accent">cotidiano.</span>
+                    </h2>
+
+                </div>
+
+                <div class="intro-text">
+
+                    <p>
+                        Calle Urbana es un ejercicio de observación
+                        del espacio público. Una aproximación a la
+                        ciudad desde sus habitantes, sus gestos y
+                        sus rutinas.
+                    </p>
+
+                    <p>
+                        Sin escenarios preparados ni situaciones
+                        construidas. La cámara registra aquello
+                        que ocurre entre el movimiento, la espera,
+                        el comercio y los encuentros anónimos.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ====================================
+             GALERÍA FOTOGRÁFICA
+
+             Las primeras siete fotografías tienen
+             como respaldo los nombres originales
+             de las imágenes adjuntas.
+
+             Puedes mantener esos nombres originales
+             o renombrarlas como foto1.jpg,
+             foto2.jpg, etc.
+
+             Los espacios 08 y 09 quedan preparados
+             para futuras fotografías.
+
+             Guarda las imágenes en la misma carpeta
+             que este archivo index.html.
+        ===================================== -->
+
+        <section class="gallery-section" id="galeria">
+
+            <div class="container">
+
+                <div class="gallery-header">
+
+                    <div>
+
+                        <div class="section-label">
+                            Archivo visual / Serie 01
+                        </div>
+
+                        <h2>
+                            Fragmentos<span class="accent">.</span>
+                        </h2>
+
+                    </div>
+
+                    <span class="gallery-counter" id="gallery-count">
+                        09 registros
+                    </span>
+
+                </div>
+
+                <div class="gallery-grid">
+
+                    <!-- FOTOGRAFÍA 01 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar Entre puestos">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto1.jpg"
+                            data-fallback="_1090963.JPG"
+                            alt="Mujer observando los puestos de una feria urbana"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">01</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    Entre puestos
+                                </span>
+                                <span class="image-category">
+                                    Comercio / Cotidianidad
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                    <!-- FOTOGRAFÍA 02 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar En tránsito">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto2.jpg"
+                            data-fallback="_1090964.JPG"
+                            alt="Mujer caminando entre puestos de frutas y comerciantes"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">02</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    En tránsito
+                                </span>
+                                <span class="image-category">
+                                    Retrato urbano
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                    <!-- FOTOGRAFÍA 03 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar Intercambio">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto3.jpg"
+                            data-fallback="_1090967.JPG"
+                            alt="Comerciante conversando con una clienta junto a un puesto de frutas"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">03</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    Intercambio
+                                </span>
+                                <span class="image-category">
+                                    Encuentros / Comercio
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                    <!-- FOTOGRAFÍA 04 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar El recorrido">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto4.jpg"
+                            data-fallback="_1090969.JPG"
+                            alt="Hombre con pantalones rojos caminando por una calle comercial"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">04</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    El recorrido
+                                </span>
+                                <span class="image-category">
+                                    Personas / Espacio público
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                    <!-- FOTOGRAFÍA 05 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar Una pausa">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto5.jpg"
+                            data-fallback="DSC00737.JPG"
+                            alt="Persona revisando una bolsa junto a una banca en una avenida"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">05</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    Una pausa
+                                </span>
+                                <span class="image-category">
+                                    Rutinas / Ciudad
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                    <!-- FOTOGRAFÍA 06 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar Entre luces y sombras">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto6.jpg"
+                            data-fallback="DSC00754.JPG"
+                            alt="Mujer con mascarilla y chaqueta amarilla caminando entre luces y sombras"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">06</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    Entre luces y sombras
+                                </span>
+                                <span class="image-category">
+                                    Luz natural / Calle
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                    <!-- FOTOGRAFÍA 07 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar La espera">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto7.jpg"
+                            data-fallback="DSC00763.JPG"
+                            alt="Mujer de perfil junto a una fachada azul cubierta de grafitis"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">07</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    La espera
+                                </span>
+                                <span class="image-category">
+                                    Retrato / Texturas urbanas
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                    <!-- FOTOGRAFÍA 08 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar Registro urbano 08">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto8.jpg"
+                            alt="Registro de fotografía urbana número ocho"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">08</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    Registro 08
+                                </span>
+                                <span class="image-category">
+                                    Archivo urbano
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                    <!-- FOTOGRAFÍA 09 -->
+
+                    <button class="gallery-item"
+                            type="button"
+                            aria-label="Ampliar Registro urbano 09">
+
+                        <div class="image-placeholder"></div>
+
+                        <img
+                            src="foto9.jpg"
+                            alt="Registro de fotografía urbana número nueve"
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="350">
+
+                        <span class="image-number">09</span>
+
+                        <span class="image-info">
+
+                            <span>
+                                <span class="image-title">
+                                    Registro 09
+                                </span>
+                                <span class="image-category">
+                                    Archivo urbano
+                                </span>
+                            </span>
+
+                            <span class="expand-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </span>
+
+                    </button>
+
+                </div>
+
+                <div class="gallery-end">
+                    Fin de la serie 01
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ====================================
+             CIERRE EDITORIAL
+        ===================================== -->
+
+        <section class="statement">
+
+            <div class="container statement-content">
+
+                <div class="section-label">
+                    Una forma de mirar
+                </div>
+
+                <h2>
+                    La ciudad está llena de historias
+                    que nadie se detiene a
+                    <span class="accent">observar.</span>
+                </h2>
+
+                <p>Mirar / Caminar / Registrar</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ========================================
+         FOOTER
+    ========================================= -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-main">
+
+                <a href="#inicio" class="footer-logo">
+                    Calle<span class="accent">.</span>Urbana
+                </a>
+
+                <a href="#inicio" class="back-to-top">
+                    Volver al inicio
+                    <span aria-hidden="true">↑</span>
+                </a>
+
+            </div>
+
+            <div class="footer-bottom">
+
+                <span>
+                    © <span id="year">2026</span> Calle Urbana.
+                    Todos los derechos reservados.
+                </span>
+
+                <span>
+                    Fotografía documental independiente / Chile
+                </span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- ========================================
+         VISUALIZADOR DE FOTOGRAFÍAS
+    ========================================= -->
+
+    <div class="lightbox"
+         id="lightbox"
+         role="dialog"
+         aria-modal="true"
+         aria-label="Visualizador de fotografías"
+         aria-hidden="true"
+         inert>
+
+        <button class="lightbox-control lightbox-close"
+                id="close-lightbox"
+                type="button"
+                aria-label="Cerrar fotografía">
+            ×
+        </button>
+
+        <button class="lightbox-control lightbox-prev"
+                id="prev-image"
+                type="button"
+                aria-label="Fotografía anterior">
+            ‹
+        </button>
+
+        <img class="lightbox-image"
+             id="lightbox-image"
+             alt="">
+
+        <button class="lightbox-control lightbox-next"
+                id="next-image"
+                type="button"
+                aria-label="Fotografía siguiente">
+            ›
+        </button>
+
+        <div class="lightbox-caption"
+             id="lightbox-caption"
+             aria-live="polite">
+        </div>
+
+    </div>
+
+    <!-- ========================================
+         JAVASCRIPT PURO
+         Sin librerías ni dependencias externas.
+    ========================================= -->
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const items = Array.from(
+                document.querySelectorAll('.gallery-item')
+            );
+
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const closeButton = document.getElementById('close-lightbox');
+            const prevButton = document.getElementById('prev-image');
+            const nextButton = document.getElementById('next-image');
+
+            let currentIndex = 0;
+            let previousFocus = null;
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            /* Año automático */
+
+            document.getElementById('year').textContent =
+                new Date().getFullYear();
+
+            /* ====================================
+               CONTROL DE CARGA DE IMÁGENES
+            ===================================== */
+
+            function updateCounter() {
+
+                const loaded = items.filter(function (item) {
+                    return item.classList.contains('is-loaded');
+                }).length;
+
+                document.getElementById('gallery-count').textContent =
+                    String(loaded).padStart(2, '0') +
+                    ' / ' +
+                    String(items.length).padStart(2, '0') +
+                    ' registros disponibles';
+
+            }
+
+            items.forEach(function (item) {
+
+                const img = item.querySelector('img');
+                const placeholder = item.querySelector('.image-placeholder');
+
+                placeholder.innerHTML = `
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke-width="1.2"
+                         aria-hidden="true">
+                        <rect x="3" y="3"
+                              width="18" height="18" rx="1"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="M3 17l5-5 4 4 4-6 5 7"/>
+                    </svg>
+                `;
+
+                function handleLoad() {
+
+                    item.classList.remove('is-error');
+                    item.classList.add('is-loaded');
+                    item.removeAttribute('aria-disabled');
+
+                    updateCounter();
+
+                }
+
+                function handleError() {
+
+                    /*
+                       Si foto1.jpg no existe, por ejemplo,
+                       se busca su nombre original adjunto.
+
+                       Si tampoco existe, se conserva
+                       el contenedor y su fondo gris.
+                    */
+
+                    if (
+                        img.dataset.fallback &&
+                        img.dataset.fallbackTried !== 'true'
+                    ) {
+
+                        img.dataset.fallbackTried = 'true';
+                        img.src = img.dataset.fallback;
+
+                        return;
+
+                    }
+
+                    item.classList.remove('is-loaded');
+                    item.classList.add('is-error');
+                    item.setAttribute('aria-disabled', 'true');
+
+                    updateCounter();
+
+                }
+
+                img.addEventListener('load', handleLoad);
+                img.addEventListener('error', handleError);
+
+                /*
+                   Detecta imágenes que terminaron de cargar
+                   antes de ejecutarse este código.
+                */
+
+                if (img.complete) {
+
+                    if (img.naturalWidth > 0) {
+                        handleLoad();
+                    } else {
+                        handleError();
+                    }
+
+                }
+
+                item.addEventListener('click', function () {
+
+                    if (!item.classList.contains('is-loaded')) {
+                        return;
+                    }
+
+                    openLightbox(item);
+
+                });
+
+            });
+
+            updateCounter();
+
+            /* ====================================
+               VISUALIZADOR
+            ===================================== */
+
+            function getAvailableItems() {
+
+                return items.filter(function (item) {
+                    return item.classList.contains('is-loaded');
+                });
+
+            }
+
+            function showImage(index) {
+
+                const availableItems = getAvailableItems();
+
+                if (!availableItems.length) {
+                    return;
+                }
+
+                currentIndex =
+                    (index + availableItems.length) %
+                    availableItems.length;
+
+                const item = availableItems[currentIndex];
+                const img = item.querySelector('img');
+                const title = item.querySelector('.image-title');
+
+                lightboxImage.src = img.currentSrc || img.src;
+                lightboxImage.alt = img.alt;
+
+                lightboxCaption.textContent =
+                    String(currentIndex + 1).padStart(2, '0') +
+                    ' / ' +
+                    String(availableItems.length).padStart(2, '0') +
+                    ' — ' +
+                    title.textContent.trim();
+
+                prevButton.hidden = availableItems.length < 2;
+                nextButton.hidden = availableItems.length < 2;
+
+            }
+
+            function openLightbox(item) {
+
+                const availableItems = getAvailableItems();
+                const index = availableItems.indexOf(item);
+
+                if (index === -1) {
+                    return;
+                }
+
+                previousFocus = document.activeElement;
+
+                showImage(index);
+
+                lightbox.inert = false;
+                lightbox.classList.add('active');
+                lightbox.setAttribute('aria-hidden', 'false');
+
+                document.body.classList.add('modal-open');
+
+                document.querySelector('main').inert = true;
+                document.querySelector('nav').inert = true;
+                document.querySelector('footer').inert = true;
+
+                closeButton.focus();
+
+            }
+
+            function closeLightbox() {
+
+                lightbox.classList.remove('active');
+                document.body.classList.remove('modal-open');
+
+                document.querySelector('main').inert = false;
+                document.querySelector('nav').inert = false;
+                document.querySelector('footer').inert = false;
+
+                if (previousFocus) {
+                    previousFocus.focus();
+                }
+
+                lightbox.setAttribute('aria-hidden', 'true');
+                lightbox.inert = true;
+
+            }
+
+            closeButton.addEventListener('click', closeLightbox);
+
+            prevButton.addEventListener('click', function () {
+                showImage(currentIndex - 1);
+            });
+
+            nextButton.addEventListener('click', function () {
+                showImage(currentIndex + 1);
+            });
+
+            /* Cerrar haciendo clic fuera de la fotografía */
+
+            lightbox.addEventListener('click', function (event) {
+
+                if (event.target === lightbox) {
+                    closeLightbox();
+                }
+
+            });
+
+            /* Navegación mediante teclado */
+
+            document.addEventListener('keydown', function (event) {
+
+                if (!lightbox.classList.contains('active')) {
+                    return;
+                }
+
+                if (event.key === 'Escape') {
+                    closeLightbox();
+                }
+
+                if (event.key === 'ArrowLeft') {
+                    showImage(currentIndex - 1);
+                }
+
+                if (event.key === 'ArrowRight') {
+                    showImage(currentIndex + 1);
+                }
+
+                /* Mantener el foco dentro del visualizador */
+
+                if (event.key === 'Tab') {
+
+                    const controls = Array.from(
+                        lightbox.querySelectorAll('button:not([hidden])')
+                    );
+
+                    const first = controls[0];
+                    const last = controls[controls.length - 1];
+
+                    if (
+                        event.shiftKey &&
+                        document.activeElement === first
+                    ) {
+
+                        event.preventDefault();
+                        last.focus();
+
+                    } else if (
+                        !event.shiftKey &&
+                        document.activeElement === last
+                    ) {
+
+                        event.preventDefault();
+                        first.focus();
+
+                    }
+
+                }
+
+            });
+
+            /* Gestos táctiles para Android y iPhone */
+
+            lightbox.addEventListener('touchstart', function (event) {
+
+                touchStartX = event.changedTouches[0].screenX;
+                touchStartY = event.changedTouches[0].screenY;
+
+            }, { passive: true });
+
+            lightbox.addEventListener('touchend', function (event) {
+
+                const distanceX =
+                    event.changedTouches[0].screenX - touchStartX;
+
+                const distanceY =
+                    event.changedTouches[0].screenY - touchStartY;
+
+                if (
+                    Math.abs(distanceX) > 65 &&
+                    Math.abs(distanceX) > Math.abs(distanceY)
+                ) {
+
+                    if (distanceX < 0) {
+                        showImage(currentIndex + 1);
+                    } else {
+                        showImage(currentIndex - 1);
+                    }
+
+                }
+
+            }, { passive: true });
+
+        });
+
+    </script>
+
+</body>
+</html>
